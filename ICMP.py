@@ -45,7 +45,7 @@ def capture_modified_ping():
 
 if __name__ == "__main__":
     string_to_send = "HELLO"
-    dst_ip = "127.0.0.1"  # IP de destino, en este caso Google DNS
+    dst_ip = "127.0.0.1"  # IP de destino, en este caso Localhost
     packet = IP(dst=dst_ip)/ICMP(type=8)/Raw(load="OriginalPing")
     send_custom_icmp(string_to_send=string_to_send, original_icmp=packet)
 
