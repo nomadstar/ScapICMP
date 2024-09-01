@@ -36,19 +36,16 @@ def extract_message_from_pcap(pcap_file):
         english = 0
         spanish = 0
         for word in words:
-            if en.check(word):
+            if es.known([word]):
                 english += 1
-            if es.check(word):
+            if en.known([word]):
                 spanish += 1
-        if english + spanish > len(words) / 2:
-            print(colored(f"Desplazamiento: {shift}", "green"))
-            print(colored(possible_message, "green"))
+        if english + spanish == len(words): 
+            print(colored(f"Mensaje posible con desplazamiento {shift}:", 'green'))
+            print(colored(possible_message, 'green'))
         else:
-            print("Desplazamiento: {shift}", "red")
-            print(possible_message)    
-        # Filtrar y mostrar mensajes con caracteres imprimibles
-        
-                
+            print(colored(f"Mensaje con desplazamiento {shift}:", 'black'))
+            print(colored(possible_message, 'black'))    
 
 if __name__ == "__main__":
     pcap_file = "captura.pcap"  # Reemplaza con el nombre de tu archivo .pcap
