@@ -1,6 +1,6 @@
 from scapy.all import rdpcap, ICMP
 from termcolor import colored
-import enchant
+from spellchecker import SpellChecker
 import string
 
 def cesar_decrypt(text, shift):
@@ -15,8 +15,8 @@ def cesar_decrypt(text, shift):
     return ''.join(decrypted)
 
 def extract_message_from_pcap(pcap_file):
-    es = enchant.Dict("es_ES")
-    en = enchant.Dict("en_US")
+    es = SpellChecker() 
+    en = SpellChecker(language='es') 
     packets = rdpcap(pcap_file)
     messages = []
 
