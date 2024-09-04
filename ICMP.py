@@ -1,6 +1,7 @@
 from scapy.all import *
-from scapy.layers.inet import IP, ICMP
+from scapy.layers.inet import IP, ICMP, ICMPTimeStampField 
 from scapy.packet import Raw
+from datetime import datetime
 import time
 
 def capture_ping():
@@ -24,15 +25,17 @@ def send_custom_icmp(string_to_send, original_icmp):
     dst_ip = original_icmp[IP].dst
     id = original_icmp[ICMP].id
     seq = original_icmp[ICMP].seq
-    
     print("\nEnviando datos en paquetes ICMP...")
     for char in string_to_send:
-        packet = IP(dst=dst_ip)/ICMP(id=id, seq=seq)/Raw(load=char)
+        timestamp = int(time.time()) # Obtener la marca de tiempo actual
+        timestamp = struct.pack('<Q', timestamp) # Empaquetar la marca de tiempo en un formato de 8 bytes
+        packet = IP(dst=dst_ip)/ICMP(id=id, seq=seq)/timestamp/Raw(load=char)
+        packet.show()
         send(packet, verbose=0)
         print(f"Enviado: {char}")
         time.sleep(0.5)  # Pausa para evitar picos de tráfico sospechosos
         seq += 1  # Incrementar el número de secuencia para cada paquete
-
+        
 def capture_modified_ping():
     # Capturar el ping ICMP modificado enviado
     print("\nCapturando paquetes ICMP modificados enviados...")
